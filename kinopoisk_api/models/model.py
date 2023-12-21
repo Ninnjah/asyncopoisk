@@ -1,6 +1,6 @@
-from typing import List, Optional
+from typing import List, Optional, Union
 
-from pydantic import BaseModel, Field
+from pydantic import BaseModel, Field, model_serializer, validator
 
 from .enums import (
     ProductionStatus,
@@ -60,6 +60,10 @@ class AwardPerson(BaseModel):
 class Company(BaseModel):
     name: str = Field(..., example="Каро-Премьер")
 
+    @model_serializer
+    def ser_model(self) -> str:
+        return self.name
+
 
 class Episode(BaseModel):
     season_number: int = Field(..., example=1, alias="seasonNumber")
@@ -77,9 +81,17 @@ class Episode(BaseModel):
 class Country(BaseModel):
     country: str = Field(..., example="США")
 
+    @model_serializer
+    def ser_model(self) -> str:
+        return self.country
+
 
 class Genre(BaseModel):
     genre: str = Field(..., example="фантастика")
+
+    @model_serializer
+    def ser_model(self) -> str:
+        return self.genre
 
 
 class FilmSequelsAndPrequelsResponse(BaseModel):
@@ -171,6 +183,10 @@ class DigitalReleaseItem(BaseModel):
 class ApiError(BaseModel):
     message: str = Field(..., example="User test@test.ru is inactive or deleted.")
 
+    @model_serializer
+    def ser_model(self) -> str:
+        return self.message
+
 
 class FiltersResponseGenres(BaseModel):
     id: Optional[int] = Field(None, example=1)
@@ -187,7 +203,7 @@ class FilmSearchResponseFilms(BaseModel):
     name_ru: Optional[str] = Field(None, example="Мстители", alias="nameRu")
     name_en: Optional[str] = Field(None, example="The Avengers", alias="nameEn")
     type: Optional[FilmType] = Field(None, example="FILM")
-    year: Optional[str] = Field(None, example="2012")
+    year: Optional[int] = Field(None, example=2012)
     description: Optional[str] = Field(None, example="США, Джосс Уидон(фантастика)")
     film_length: Optional[str] = Field(None, example="2:17", alias="filmLength")
     countries: Optional[List[Country]] = None
@@ -209,6 +225,16 @@ class FilmSearchResponseFilms(BaseModel):
         example="https://kinopoiskapiunofficial.tech/images/posters/kp_small/301.jpg",
         alias="posterUrlPreview",
     )
+
+    @validator("year", pre=True)
+    def year_validator(cls, v: Optional[Union[str, int]]) -> Optional[int]:
+        if v == "null":
+            return None
+
+        try:
+            return int(v)
+        except ValueError:
+            raise ValueError("year must be `null` or int")
 
 
 class FilmSearchByFiltersResponseItems(BaseModel):
@@ -303,7 +329,7 @@ class FilmCollectionResponseItems(BaseModel):
         None, example=7.9, alias="ratingKinopoisk"
     )
     rating_imbd: Optional[float] = Field(None, example=7.9, alias="ratingImbd")
-    year: Optional[int] = Field(None, example="2012")
+    year: Optional[int] = Field(None, example=2012)
     type: Optional[FilmType] = Field(None, example="FILM")
     poster_url: Optional[str] = Field(
         None,
@@ -393,7 +419,7 @@ class KinopoiskUserVoteResponseItems(BaseModel):
         None, example=7.9, alias="ratingKinopoisk"
     )
     rating_imbd: Optional[float] = Field(None, example=7.9, alias="ratingImbd")
-    year: Optional[str] = Field(None, example="2012")
+    year: Optional[int] = Field(None, example=2012)
     type: Optional[FilmType] = Field(None, example="FILM")
     poster_url: Optional[str] = Field(
         None,
@@ -406,6 +432,16 @@ class KinopoiskUserVoteResponseItems(BaseModel):
         alias="posterUrlPreview",
     )
     user_rating: Optional[int] = Field(None, example=7, alias="userRating")
+
+    @validator("year", pre=True)
+    def year_validator(cls, v: Optional[Union[str, int]]) -> Optional[int]:
+        if v == "null":
+            return None
+
+        try:
+            return int(v)
+        except ValueError:
+            raise ValueError("year must be `null` or int")
 
 
 class ApiKeyResponseTotalQuota(BaseModel):
@@ -680,3 +716,4 @@ class DistributionResponse(BaseModel):
 class AwardResponse(BaseModel):
     total: int = Field(..., example=5)
     items: List[Award]
+

@@ -3,7 +3,7 @@ requires = ["hatchling"]
 build-backend = "hatchling.build"
 
 [project]
-version = "1.0.1"
+version = "1.0.2"
 name = "asyncopoisk"
 description = "Async wrapper for unofficial KinopoiskAPI"
 readme = "README.md"
@@ -25,8 +25,8 @@ classifiers = [
     "Operating System :: OS Independent",
 ]
 dependencies = [
-    "pydantic>=2.4.1,<2.6",
-    "httpx==0.26.0",
+    "pydantic>=2.4.0,<2.6",
+    "httpx>=0.25.0,<0.30.0",
 ]
 
 [project.urls]

@@ -4,7 +4,6 @@ name = "asyncopoisk"
 description = "Async wrapper for unofficial KinopoiskAPI"
 readme = "README.md"
 requires-python = ">=3.8"
-license = "MIT"
 authors = [
     { name="Ninnjah", email="yand.man4@gmail.com" },
 ]

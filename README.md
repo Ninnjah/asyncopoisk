@@ -1,4 +1,4 @@
-# Asyncopoisk
+# [Asyncopoisk](https://github.com/Ninnjah/asyncopoisk)
 Это асинхронная обертка для [Kinopoisk API Unofficial](https://kinopoiskapiunofficial.tech/). Создавалась для личного пользования, так как удобной и асинхронной обертки найти не смог. Это был мой первый опыт в написании АПИ обертки, так что PR и Issue приветствуются!
 
 # Особенности

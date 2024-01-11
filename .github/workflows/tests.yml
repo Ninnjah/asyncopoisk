@@ -58,6 +58,4 @@ jobs:
 
       - name: Run tests
         run: |
-          flags="$flags --cov=aiogram --cov-config .coveragerc --cov-report=xml"
-          [[ "$IS_WINDOWS" == "false" ]] && flags="$flags --redis redis://localhost:6379/0"
-          pytest --token {{ secrets.KP_TOKEN }}
+          pytest tests --token {{ secrets.KP_TOKEN }}

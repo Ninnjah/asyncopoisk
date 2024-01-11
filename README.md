@@ -6,6 +6,12 @@
 
 # Начало работы
 Перед использованием asyncopoisk вам нужно получить токен. Получить его можно на сайте [Kinopoisk API Unofficial](https://kinopoiskapiunofficial.tech/)
+
+Установите Asyncopoisk
+```shell
+pip install asyncopoisk
+```
+
 Далее создайте экземпляр обертки
 ```python
 from asyncopoisk import KinopoiskAPI

@@ -10,7 +10,7 @@ class KpUsers(BaseMethod):
 
     async def votes(self, user_id: int, page: int = 1) -> KinopoiskUserVoteResponse:
         res = await self.session._request_get(
-            f"{self._base_url}/{user_id}", params={"page": page}
+            f"{self._base_url}/{user_id}/votes", params={"page": page}
         )
         if res.status_code == 200:
             return KinopoiskUserVoteResponse.model_validate(res.json())

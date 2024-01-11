@@ -31,6 +31,9 @@ Issues = "https://github.com/Ninnjah/asyncopoisk/issues/"
 Repository = "https://github.com/Ninnjah/asyncopoisk/"
 
 [project.optional-dependencies]
+dev = [
+    "ruff~=0.1.8",
+]
 test = [
     "pytest~=7.4.4",
     "pytest-asyncio~=0.23.3",

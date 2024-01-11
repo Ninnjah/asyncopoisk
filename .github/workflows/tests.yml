@@ -50,7 +50,7 @@ jobs:
 
       - name: Install project dependencies
         run: |
-          pip install -e .[test]
+          pip install -e .[dev,test]
 
       - name: Lint code
         run: |

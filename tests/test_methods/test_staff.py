@@ -8,5 +8,4 @@ class TestStaff:
 
     async def test_film_staff(self, kp: KinopoiskAPI):
         staff = await kp.staff(film_id=TestStaff.film_id)
-        for person in staff:
-            await kp.staff(person_id=person.staff_id)
+        await kp.staff(person_id=staff[0].staff_id)

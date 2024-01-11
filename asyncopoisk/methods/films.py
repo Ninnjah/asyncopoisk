@@ -53,13 +53,13 @@ class Films(BaseMethod):
         genres: List[int] = None,
         order: SearchOrder = SearchOrder.RATING,
         type: SearchFilmType = SearchFilmType.ALL,
-        rating_from: float = 0,
-        rating_to: float = 10,
-        year_from: int = 1000,
-        year_to: int = 3000,
+        rating_from: Optional[float] = None,
+        rating_to: Optional[float] = None,
+        year_from: Optional[int] = None,
+        year_to: Optional[int] = None,
         imdb_id: Optional[str] = None,
         keyword: Optional[str] = None,
-        page: int = 1,
+        page: Optional[int] = None,
     ) -> Optional[FilmSearchByFiltersResponse]:
         payload = {
             "countries": countries,
@@ -74,6 +74,7 @@ class Films(BaseMethod):
             "keyword": keyword,
             "page": page,
         }
+        payload = {k: v for k, v in payload.items() if v}
 
         res = await self.session._request_get(self._base_url_v2, params=payload)
 

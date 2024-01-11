@@ -58,4 +58,4 @@ jobs:
 
       - name: Run tests
         run: |
-          pytest tests --token {{ secrets.KP_TOKEN }}
+          pytest tests --token ${{ secrets.KP_TOKEN }}

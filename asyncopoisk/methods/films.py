@@ -21,7 +21,14 @@ from ..models.model import (
     FilmSearchResponse,
     DigitalReleaseResponse,
 )
-from ..models.enums import Order, ImageType, CollectionType, Month
+from ..models.enums import (
+    Order,
+    ImageType,
+    CollectionType,
+    Month,
+    SearchOrder,
+    SearchFilmType,
+)
 from ..exceptions import BadRequest
 
 
@@ -31,19 +38,84 @@ class Films(BaseMethod):
         self._base_url_v1 = f"{self._base_url}/films".format(api_version="v2.1")
         self._base_url_v2 = f"{self._base_url}/films".format(api_version="v2.2")
 
-    async def get(
-        self, film_id: Optional[int] = ""
-    ) -> Optional[Union[Film, FilmSearchByFiltersResponse]]:
-        model = Film if film_id else FilmSearchByFiltersResponse
-        url = f"{self._base_url_v2}/{film_id}" if film_id else self._base_url_v2
-
-        res = await self.session._request_get(url)
+    async def _get_film(self, film_id: int) -> Optional[Film]:
+        res = await self.session._request_get(f"{self._base_url_v2}/{film_id}")
         if res.status_code == 200:
-            return model.model_validate(res.json())
+            return Film.model_validate(res.json())
         elif res.status_code == 404:
             return None
         else:
             raise BadRequest(res)
+
+    async def _search_film(
+        self,
+        countries: List[int] = None,
+        genres: List[int] = None,
+        order: SearchOrder = SearchOrder.RATING,
+        type: SearchFilmType = SearchFilmType.ALL,
+        rating_from: float = 0,
+        rating_to: float = 10,
+        year_from: int = 1000,
+        year_to: int = 3000,
+        imdb_id: Optional[str] = None,
+        keyword: Optional[str] = None,
+        page: int = 1,
+    ) -> Optional[FilmSearchByFiltersResponse]:
+        payload = {
+            "countries": countries,
+            "genres": genres,
+            "order": order.value,
+            "type": type.value,
+            "ratingFrom": rating_from,
+            "ratingTo": rating_to,
+            "yearFrom": year_from,
+            "yearTo": year_to,
+            "imdbId": imdb_id,
+            "keyword": keyword,
+            "page": page,
+        }
+
+        res = await self.session._request_get(self._base_url_v2, params=payload)
+
+        if res.status_code == 200:
+            return FilmSearchByFiltersResponse.model_validate(res.json())
+        elif res.status_code == 404:
+            return None
+        else:
+            raise BadRequest(res)
+
+    async def __call__(
+        self,
+        film_id: Optional[int] = None,
+        countries: List[int] = None,
+        genres: List[int] = None,
+        order: SearchOrder = SearchOrder.RATING,
+        type: SearchFilmType = SearchFilmType.ALL,
+        rating_from: float = 0,
+        rating_to: float = 10,
+        year_from: int = 1000,
+        year_to: int = 3000,
+        imdb_id: Optional[str] = None,
+        keyword: Optional[str] = None,
+        page: int = 1,
+    ) -> Optional[Union[Film, FilmSearchByFiltersResponse]]:
+        if film_id:
+            return await self._get_film(film_id=film_id)
+
+        else:
+            return await self._search_film(
+                countries=countries,
+                genres=genres,
+                order=order,
+                type=type,
+                rating_from=rating_from,
+                rating_to=rating_to,
+                year_from=year_from,
+                year_to=year_to,
+                imdb_id=imdb_id,
+                keyword=keyword,
+                page=page,
+            )
 
     async def seasons(self, film_id: int) -> SeasonResponse:
         res = await self.session._request_get(f"{self._base_url_v2}/{film_id}/seasons")

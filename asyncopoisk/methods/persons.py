@@ -8,7 +8,7 @@ class Persons(BaseMethod):
         super().__init__(**kwargs)
         self._base_url = f"{self._base_url}/persons".format(api_version="v1")
 
-    async def get(self, name: str, page: int = 1) -> PersonByNameResponse:
+    async def __call__(self, name: str, page: int = 1) -> PersonByNameResponse:
         res = await self.session._request_get(
             self._base_url, params={"name": name, "page": page}
         )

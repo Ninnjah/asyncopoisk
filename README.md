@@ -1,4 +1,7 @@
 # [Asyncopoisk](https://github.com/Ninnjah/asyncopoisk)
+
+![PyPI - License](https://img.shields.io/pypi/l/asyncopoisk?color=%23d12e7d&style=flat-square&link=https%3A%2F%2Fpypi.org%2Fproject%2Fasyncopoisk%2F) ![PyPI - Version](https://img.shields.io/pypi/v/asyncopoisk?style=flat-square&color=%23d12e7d&link=https%3A%2F%2Fpypi.org%2Fproject%2Fasyncopoisk%2F) ![PyPI - Supported versions](https://img.shields.io/pypi/pyversions/asyncopoisk?style=flat-square&color=%23d12e7d&link=https%3A%2F%2Fpypi.org%2Fproject%2Fasyncopoisk%2F) ![GitHub Actions Workflow Status](https://img.shields.io/github/actions/workflow/status/ninnjah/asyncopoisk/tests.yml?branch=main&style=flat-square&link=https%3A%2F%2Fgithub.com%2FNinnjah%2Fasyncopoisk%2Factions)
+
 Это асинхронная обертка для [Kinopoisk API Unofficial](https://kinopoiskapiunofficial.tech/). Создавалась для личного пользования, так как удобной и асинхронной обертки найти не смог. Это был мой первый опыт в написании АПИ обертки, так что PR и Issue приветствуются!
 
 # Особенности
